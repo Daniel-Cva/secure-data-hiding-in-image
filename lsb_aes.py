@@ -1,3 +1,4 @@
+
 import cv2
 import numpy as np
 import os
@@ -48,30 +49,33 @@ def encrypt_data(image_path, data, password_key, output_path):
 
 
 def decrypt_data(image_path, password_key):
-    # Read the image
-    image = cv2.imread(image_path)
-    if image is None:
-        raise ValueError("Image not found or unable to read image")
+    try:
+        # Read the image
+        image = cv2.imread(image_path)
+        if image is None:
+            raise ValueError("Image not found or unable to read image")
 
-    # Extract encrypted data from the image using LSB
-    binary_data = ''
-    for row in image:
-        for pixel in row:
-            for i in range(3):  # Iterate over RGB channels
-                binary_data += str(pixel[i] & 1)
+        # Extract encrypted data from the image using LSB
+        binary_data = ''
+        for row in image:
+            for pixel in row:
+                for i in range(3):  # Iterate over RGB channels
+                    binary_data += str(pixel[i] & 1)
 
-    # Convert binary data to bytes
-    encrypted_data = int(binary_data, 2).to_bytes((len(binary_data) + 7) // 8, byteorder='big')
+        # Convert binary data to bytes
+        encrypted_data = int(binary_data, 2).to_bytes((len(binary_data) + 7) // 8, byteorder='big')
 
-    # Extract IV and ciphertext
-    iv = encrypted_data[:16]
-    ct = encrypted_data[16:]
+        # Extract IV and ciphertext
+        iv = encrypted_data[:16]
+        ct = encrypted_data[16:]
 
-    # Generate AES key
-    key = generate_key(password_key)
+        # Generate AES key
+        key = generate_key(password_key)
 
-    # Decrypt the data using AES
-    cipher = AES.new(key, AES.MODE_CBC, iv=iv)
-    decrypted_data = unpad(cipher.decrypt(ct), AES.block_size)
+        # Decrypt the data using AES
+        cipher = AES.new(key, AES.MODE_CBC, iv=iv)
+        decrypted_data = unpad(cipher.decrypt(ct), AES.block_size)
 
-    return decrypted_data.decode('utf-8')
+        return decrypted_data.decode('utf-8')
+    except (ValueError, KeyError):
+        return None
