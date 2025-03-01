@@ -51,6 +51,10 @@ def decrypt():
             
             decrypted_data = decrypt_data(image_path, password_key)
             
+            if decrypted_data is None:
+                error = "Decryption failed. Incorrect password or corrupted image."
+                return render_template('decrypt.html', error=error)
+
             return render_template('decrypt.html', decrypted_data=decrypted_data)
     
     return render_template('decrypt.html')
