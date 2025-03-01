@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Encrypt Data</title>
+</head>
+<body>
+    <h1>Encrypt Data</h1>
+    <form action="{{ url_for('encrypt') }}" method="post" enctype="multipart/form-data">
+        <label for="image">Select Image:</label>
+        <input type="file" name="image" id="image" required><br><br>
+        <label for="data">Data to Hide:</label>
+        <input type="text" name="data" id="data" required><br><br>
+        <label for="passwordkey">Password Key:</label>
+        <input type="password" name="passwordkey" id="passwordkey" required><br><br>
+        <input type="submit" value="Encrypt">
+    </form>
+</body>
+</html>
