@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Decrypt Data</title>
+</head>
+<body>
+    <h1>Decrypt Data</h1>
+    <form action="{{ url_for('decrypt') }}" method="post" enctype="multipart/form-data">
+        <label for="image">Select Encrypted Image:</label>
+        <input type="file" name="image" id="image" required><br><br>
+        <label for="passwordkey">Password Key:</label>
+        <input type="password" name="passwordkey" id="passwordkey" required><br><br>
+        <input type="submit" value="Decrypt">
+    </form>
+    {% if decrypted_data %}
+        <h2>Decrypted Data:</h2>
+        <p>{{ decrypted_data }}</p>
+    {% endif %}
+</body>
+</html>
